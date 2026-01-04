@@ -5,6 +5,7 @@ out/
 target/
 build/
 dist/
+lib/
 
 # IDE files
 .vscode/
