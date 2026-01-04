@@ -1,0 +1,73 @@
+# Compiled class files
+*.class
+bin/
+out/
+target/
+build/
+dist/
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# NetBeans
+nbproject/
+nbdist/
+.nb-gradle/
+
+# Build tools
+.gradle/
+.mvn/
+mvnw
+mvnw.cmd
+gradlew
+gradlew.bat
+pom.xml
+build.gradle
+gradle.properties
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Log files
+*.log
+logs/
+
+# Executables
+*.exe
+*.jar
+*.war
+*.ear
+
+# Temporary files
+*.tmp
+*.temp
+
+# System files
+*.orig
+*.bak
+
+# Java specific
+hs_err_pid*
+replay_pid*
+
+# Test files
+test-output/
+
+# VS Code specific (more detailed)
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/extensions.json
+.vscode/*.code-workspace
