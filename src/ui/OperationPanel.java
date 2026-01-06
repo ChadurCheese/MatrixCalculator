@@ -81,7 +81,7 @@ public class OperationPanel extends JPanel {
         // Buttons
         calculateButton = new JButton("Calculate");
         calculateButton.setBackground(new Color(70, 130, 180));
-        calculateButton.setForeground(Color.WHITE);
+        calculateButton.setForeground(Color.BLACK);
         calculateButton.setFont(new Font("Arial", Font.BOLD, 14));
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -90,7 +90,7 @@ public class OperationPanel extends JPanel {
         
         clearButton = new JButton("Clear All");
         clearButton.setBackground(new Color(220, 20, 60));
-        clearButton.setForeground(Color.WHITE);
+        clearButton.setForeground(Color.BLACK);
         gbc.gridy = 5;
         add(clearButton, gbc);
         
