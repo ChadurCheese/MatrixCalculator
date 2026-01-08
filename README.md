@@ -41,9 +41,6 @@ MatrixCalculator/
 ```
 
 ## 📞 Support
-- **Issues**: Use GitHub Issues
 - **Contact**: GitHub [@ChadurCheese](https://github.com/ChadurCheese)
 
 ---
-
-*Made with ❤️ using Java and FlatLaf*
