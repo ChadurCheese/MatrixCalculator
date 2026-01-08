@@ -88,7 +88,7 @@ public class OperationPanel extends JPanel {
         gbc.gridwidth = 2;
         add(calculateButton, gbc);
         
-        clearButton = new JButton("Clear All");
+        clearButton = new JButton("Reset");
         clearButton.setBackground(new Color(220, 20, 60));
         clearButton.setForeground(Color.BLACK);
         gbc.gridy = 5;

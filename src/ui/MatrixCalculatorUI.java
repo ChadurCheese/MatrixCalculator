@@ -24,7 +24,7 @@ public class MatrixCalculatorUI extends JFrame {
         
         // Set application icon (optional)
         try {
-            ImageIcon icon = new ImageIcon("icon.png");
+            ImageIcon icon = new ImageIcon("src\\assets\\matrixCalc.jpg");
             setIconImage(icon.getImage());
         } catch (Exception e) {
             // Use default icon if custom icon not found

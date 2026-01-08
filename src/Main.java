@@ -1,27 +1,16 @@
+
 import ui.MatrixCalculatorUI;
+import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.*;
 import java.awt.*;
 
-// import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatLightLaf;
-// import com.formdev.flatlaf.FlatIntelliJLaf;
-
 public class Main {
     public static void main(String[] args) {
-        
-        // Different FlatLaf themes
+        // Set FlatLaf modern look and feel
         FlatLightLaf.setup();
-        // FlatIntelliJLaf.setup();
-        // FlatDarculaLaf.setup();
-
+        
+        // Optional: Add some custom UI improvements
         customizeUI();
-
-        // system look and feel
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         
         // Run the application
         SwingUtilities.invokeLater(() -> {
@@ -29,20 +18,23 @@ public class Main {
             calculator.setVisible(true);
         });
     }
-
+    
     private static void customizeUI() {
-        // buttons
-        UIManager.put("Button.arc", 10);
+        // Make UI components more modern
+        UIManager.put("Button.arc", 8);
         UIManager.put("Component.arc", 8);
-        UIManager.put("Button.background", new Color(66, 133, 244)); // Google Blue
-        UIManager.put("Button.foreground", Color.BLACK);
+        UIManager.put("TextComponent.arc", 6);
         
-        // table colors
-        UIManager.put("Table.background", Color.WHITE);
-        UIManager.put("Table.gridColor", new Color(240, 240, 240));
+        // Better scroll bars
+        UIManager.put("ScrollBar.width", 12);
         
-        // text fields 
-        UIManager.put("TextField.background", Color.WHITE);
-        UIManager.put("TextField.borderColor", new Color(218, 220, 224));
+        // Improve table appearance globally
+        UIManager.put("Table.showHorizontalLines", true);
+        UIManager.put("Table.showVerticalLines", false);
+        UIManager.put("Table.intercellSpacing", new Dimension(0, 1));
+        
+        // Better selection colors
+        UIManager.put("Table.selectionBackground", new Color(66, 133, 244, 100));
+        UIManager.put("Table.selectionForeground", Color.BLACK);
     }
 }
