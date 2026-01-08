@@ -5,7 +5,6 @@ out/
 target/
 build/
 dist/
-lib/
 
 # IDE files
 .vscode/
@@ -47,7 +46,6 @@ logs/
 
 # Executables
 *.exe
-*.jar
 *.war
 *.ear
 

@@ -3,7 +3,11 @@ package ui;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class MatrixInputPanel extends JPanel {
     private JTable matrixTable;
@@ -60,7 +64,30 @@ public class MatrixInputPanel extends JPanel {
             }
         };
         
-        matrixTable = new JTable(tableModel);
+        matrixTable = new JTable(tableModel) {
+            @Override
+            public TableCellEditor getCellEditor(int row, int column) {
+                TableCellEditor editor = super.getCellEditor(row, column);
+                if (editor instanceof DefaultCellEditor) {
+                    Component component = ((DefaultCellEditor) editor).getComponent();
+                    if (component instanceof JTextField) {
+                        JTextField textField = (JTextField) component;
+                        // Remove the default formatter that causes 0.01 issue
+                        textField.setHorizontalAlignment(JTextField.RIGHT);
+                        
+                        // Add focus listener for better UX
+                        textField.addFocusListener(new FocusAdapter() {
+                            @Override
+                            public void focusGained(FocusEvent e) {
+                                textField.selectAll();
+                            }
+                        });
+                    }
+                }
+                return editor;
+            }
+        };
+
         matrixTable.setRowHeight(25);
         matrixTable.getTableHeader().setReorderingAllowed(false);
         
