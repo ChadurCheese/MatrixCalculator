@@ -2,6 +2,7 @@ package ui;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 
@@ -57,39 +58,152 @@ public class MatrixInputPanel extends JPanel {
         add(controlPanel, BorderLayout.NORTH);
         
         // Matrix table
-        tableModel = new DefaultTableModel(2, 2) {
-            @Override
-            public Class<?> getColumnClass(int columnIndex) {
-                return Double.class;
-            }
-        };
+        // Matrix table with custom model for better number handling
+    tableModel = new DefaultTableModel(2, 2) {
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return Double.class;
+        }
         
-        matrixTable = new JTable(tableModel) {
-            @Override
-            public TableCellEditor getCellEditor(int row, int column) {
-                TableCellEditor editor = super.getCellEditor(row, column);
-                if (editor instanceof DefaultCellEditor) {
-                    Component component = ((DefaultCellEditor) editor).getComponent();
-                    if (component instanceof JTextField) {
-                        JTextField textField = (JTextField) component;
-                        // Remove the default formatter that causes 0.01 issue
-                        textField.setHorizontalAlignment(JTextField.RIGHT);
-                        
-                        // Add focus listener for better UX
-                        textField.addFocusListener(new FocusAdapter() {
-                            @Override
-                            public void focusGained(FocusEvent e) {
-                                textField.selectAll();
-                            }
-                        });
+        @Override
+        public void setValueAt(Object value, int row, int column) {
+            // Handle string input and convert to Double
+            if (value instanceof String) {
+                String str = ((String) value).trim();
+                if (str.isEmpty()) {
+                    super.setValueAt(0.0, row, column);
+                } else {
+                    try {
+                        // Remove leading zeros (fixes 0.01 issue)
+                        if (str.startsWith("0") && str.length() > 1 && !str.startsWith("0.")) {
+                            str = str.replaceFirst("^0+", "");
+                            if (str.isEmpty()) str = "0";
+                        }
+                        double num = Double.parseDouble(str);
+                        super.setValueAt(num, row, column);
+                    } catch (NumberFormatException e) {
+                        // Keep old value if invalid
+                        super.setValueAt(getValueAt(row, column), row, column);
                     }
                 }
-                return editor;
+            } else {
+                super.setValueAt(value, row, column);
             }
-        };
+        }
+    };
 
-        matrixTable.setRowHeight(25);
-        matrixTable.getTableHeader().setReorderingAllowed(false);
+    matrixTable = new JTable(tableModel);
+
+    // ========== FIX 1: Single cell selection (not entire row/col) ==========
+    matrixTable.setRowSelectionAllowed(false);
+    matrixTable.setColumnSelectionAllowed(false);
+    matrixTable.setCellSelectionEnabled(true);
+    matrixTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+
+    // ========== FIX 2: Better cell highlighting ==========
+    matrixTable.setSelectionBackground(new Color(66, 133, 244, 100));  // Semi-transparent blue
+    matrixTable.setSelectionForeground(Color.BLACK);
+    matrixTable.setRowHeight(30);
+
+    // ========== FIX 3: Better table appearance ==========
+    matrixTable.setShowGrid(true);
+    matrixTable.setGridColor(new Color(230, 230, 230));
+    matrixTable.setIntercellSpacing(new Dimension(0, 0));
+
+    // ========== FIX 4: Center align and format numbers ==========
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer() {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, 
+                isSelected, hasFocus, row, column);
+            
+            // Always center align
+            setHorizontalAlignment(JLabel.CENTER);
+            
+            // Format numbers nicely - remove trailing .0
+            if (value instanceof Number) {
+                double num = ((Number) value).doubleValue();
+                if (Math.abs(num - Math.round(num)) < 0.000001) {
+                    // It's essentially an integer
+                    setText(String.format("%d", Math.round(num)));
+                } else {
+                    // Show 2 decimal places max
+                    setText(String.format("%.2f", num));
+                }
+            }
+            
+            // Alternating row colors (subtle)
+            if (!isSelected) {
+                if (row % 2 == 0) {
+                    c.setBackground(Color.WHITE);
+                } else {
+                    c.setBackground(new Color(248, 249, 250));  // Very light gray
+                }
+            }
+            
+            // Custom border for focused cell
+            if (hasFocus) {
+                setBorder(BorderFactory.createLineBorder(new Color(66, 133, 244), 2));
+            } else {
+                setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+            }
+            
+            return c;
+        }
+    };
+
+    // Apply the renderer to all columns
+    for (int i = 0; i < matrixTable.getColumnCount(); i++) {
+        matrixTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        matrixTable.getColumnModel().getColumn(i).setPreferredWidth(70);
+    }
+
+    // ========== FIX 5: Better table header ==========
+    matrixTable.getTableHeader().setReorderingAllowed(false);
+    matrixTable.getTableHeader().setBackground(new Color(248, 249, 250));
+    matrixTable.getTableHeader().setForeground(new Color(60, 64, 67));
+    matrixTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+
+    // ========== FIX 6: Custom editor for better input (fixes 0.01 issue) ==========
+    matrixTable.setDefaultEditor(Object.class, new DefaultCellEditor(new JTextField()) {
+        {
+            JTextField textField = (JTextField) getComponent();
+            textField.setHorizontalAlignment(JTextField.CENTER);
+            
+            // Select all text when cell gets focus
+            textField.addFocusListener(new FocusAdapter() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    SwingUtilities.invokeLater(() -> {
+                        textField.selectAll();
+                    });
+                }
+            });
+    }
+    
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
+            JTextField editor = (JTextField) super.getTableCellEditorComponent(
+                table, value, isSelected, row, column);
+            
+            // Format value for editing - show integers without .0
+            if (value instanceof Number) {
+                double num = ((Number) value).doubleValue();
+                if (Math.abs(num - Math.round(num)) < 0.000001) {
+                    editor.setText(String.valueOf(Math.round(num)));
+                } else {
+                    editor.setText(String.valueOf(num));
+                }
+            } else if (value != null) {
+                editor.setText(value.toString());
+            }
+            
+            editor.selectAll();
+            return editor;
+        }
+    });
         
         // Set column widths
         for (int i = 0; i < tableModel.getColumnCount(); i++) {

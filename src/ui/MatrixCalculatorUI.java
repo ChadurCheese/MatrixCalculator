@@ -53,40 +53,40 @@ public class MatrixCalculatorUI extends JFrame {
             }
         });
         
-        // Create main content panel
+        // Create main content panel with better proportions
         JPanel mainPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.BOTH;
-        
-        // Matrix A panel
+
+        // Matrix A panel - LEFT (30% width, full height)
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 2;
-        gbc.weightx = 0.4;
-        gbc.weighty = 1.0;
+        gbc.weightx = 0.3;    // 30% width
+        gbc.weighty = 1.0;    // Full height
         mainPanel.add(matrixAPanel, gbc);
-        
-        // Operation panel
+
+        // Operation panel - CENTER TOP (40% width, 25% height)
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
-        gbc.weightx = 0.2;
-        gbc.weighty = 0.3;
+        gbc.weightx = 0.4;    // 40% width
+        gbc.weighty = 0.25;   // 25% height
         mainPanel.add(operationPanel, gbc);
-        
-        // Result panel
+
+        // Result panel - CENTER BOTTOM (40% width, 75% height - BIGGER!)
         gbc.gridx = 1;
         gbc.gridy = 1;
-        gbc.weighty = 0.7;
+        gbc.weighty = 0.75;   // 75% height (much larger!)
         mainPanel.add(resultPanel, gbc);
-        
-        // Matrix B panel
+
+        // Matrix B panel - RIGHT (30% width, full height)
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.gridheight = 2;
-        gbc.weightx = 0.4;
-        gbc.weighty = 1.0;
+        gbc.weightx = 0.3;    // 30% width
+        gbc.weighty = 1.0;    // Full height
         mainPanel.add(matrixBPanel, gbc);
         
         // Add status bar
@@ -99,6 +99,8 @@ public class MatrixCalculatorUI extends JFrame {
         
         // Set window properties
         setSize(1200, 700);
+        setResizable(true);
+        setMinimumSize(new Dimension(1000, 600));
         setLocationRelativeTo(null);
         setVisible(true);
     }
