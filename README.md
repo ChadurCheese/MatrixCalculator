@@ -16,7 +16,7 @@ A comprehensive Java desktop application for performing matrix operations with a
    ```
 
 2. **Run the application**
-   - **Windows**: Double-click `run.bat`
+   - **Windows**: Double-click `run.bat`, `run.bat` (Terminal), `.\run.ps1` (PowerShell)
    - **Linux/Mac**: Run `chmod +x run.sh && ./run.sh`
 
 **That's it!** The FlatLaf library is already included.
