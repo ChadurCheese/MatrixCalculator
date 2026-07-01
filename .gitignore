@@ -30,9 +30,6 @@ mvnw
 mvnw.cmd
 gradlew
 gradlew.bat
-pom.xml
-build.gradle
-gradle.properties
 
 # OS files
 .DS_Store
@@ -60,6 +57,9 @@ logs/
 # Java specific
 hs_err_pid*
 replay_pid*
+
+# JPro runtime artifacts
+RUNNING_PID
 
 # Test files
 test-output/

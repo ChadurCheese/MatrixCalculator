@@ -1,20 +1,13 @@
-# Simple Matrix Calculator Launcher for PowerShell
-Write-Host "Matrix Calculator - Starting..." -ForegroundColor Green
+# Matrix Calculator Launcher for PowerShell
+Write-Host "Matrix Calculator" -ForegroundColor Green
+Write-Host "===================="
 
-# Clean
-if (Test-Path "bin") {
-    Remove-Item -Path "bin" -Recurse -Force
-}
-New-Item -ItemType Directory -Path "bin" -Force | Out-Null
-
-# Compile
-Write-Host "Compiling..." -ForegroundColor Yellow
-javac -cp "lib/flatlaf-3.2.1.jar" -d bin src/*.java src/core/*.java src/ui/*.java
-
-if ($LASTEXITCODE -eq 0) {
-    Write-Host "Launching..." -ForegroundColor Green
-    java -cp "bin;lib/flatlaf-3.2.1.jar" Main
-} else {
-    Write-Host "Compilation failed!" -ForegroundColor Red
+if (-not (Get-Command mvn -ErrorAction SilentlyContinue)) {
+    Write-Host "Maven was not found on your PATH." -ForegroundColor Red
+    Write-Host "Install it from https://maven.apache.org/download.cgi and try again."
     pause
+    exit 1
 }
+
+Write-Host "Launching Matrix Calculator..." -ForegroundColor Green
+mvn -q javafx:run
