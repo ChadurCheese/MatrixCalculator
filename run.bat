@@ -1,18 +1,18 @@
 @echo off
-echo Compiling Matrix Calculator with Modern UI...
+echo Matrix Calculator
+echo ====================
 echo.
 
-if exist bin rmdir /s /q bin >nul
-mkdir bin 2>nul
+where mvn >nul 2>nul
+if errorlevel 1 (
+    echo Maven was not found on your PATH.
+    echo Install it from https://maven.apache.org/download.cgi and try again.
+    pause
+    exit /b 1
+)
 
-javac -cp "src;lib/flatlaf-3.2.1.jar" -encoding UTF8 -d bin ^
-    src/Main.java ^
-    src/core/*.java ^
-    src/ui/*.java
-
+echo Launching Matrix Calculator...
 echo.
-echo Running Matrix Calculator...
-echo.
-java -cp "bin;lib/flatlaf-3.2.1.jar" Main
+call mvn -q javafx:run
 
 pause
